@@ -2,8 +2,8 @@
  *                    squareSolver
  *                    ------------
  * Author:        Joseph Julik
- * Last Revision: 06-26-2012
- * Version:       0.2
+ * Last Revision: 03-11-2011
+ * Version:       0.1
  * Description:
  *     Automatically solves square puzzles
 *****************************************************************************/
@@ -13,7 +13,61 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <sys/sem.h>
+
+#define SHM_KEY 20103947
+
 using namespace std;
+
+class commonThread {
+	public:
+	
+		commonThead() {
+			vop[0].sem_num = 0;
+			vop[0].sem_op = 1;
+			vop[0].sem_flg = 0;
+			pop[0].sem_num = 0;
+			pop[0].sem_op = -1;
+			pop[0].sem_flg = 0;
+		}
+		
+		void initSHM () {
+			shmID = shmget(SHM_KEY, 8, 0666 | IPC_CREAT);
+			shmSem = semget(IPC_PRIVATE, 1, IPC_CREAT | 0666);
+			vOperation(shmSem, 0);
+		}
+		
+	private:
+		static int shmID;
+		static int shmSem;
+		struct sembuf vop[1]; //a V operation
+		struct sembuf pop[1]; //a P operation
+};
+
+int commonOperations::shmID;
+int commonOperations::shmSem;
+
+class masterThread: public commonThread {
+	public:
+	
+		masterThread() {
+		
+		}
+	private:
+	
+};
+
+class slaveThread: public commonThread {
+	public:
+		
+		slaveThread() {
+		
+		}
+	private:
+	
+};
 
 int main (int argc, char *argv[]) {
     char param1[] = "./workerThread";
@@ -53,12 +107,9 @@ int main (int argc, char *argv[]) {
     for (i = 0; i < threadCount; i++) {
         returnPIDs[i] = wait(&returnStatus[i]);
     }
-    int solutions = (WEXITSTATUS(returnStatus[0]) + returnStatus[1] + returnStatus[2] + returnStatus[3] + returnStatus[4] + returnStatus[5]) / 256;
-    printf("%d", solutions);
-    //printf(">>%d\n>>%d\n>>%d\n>>%d\n>>%d\n>>%d\n", (int)returnPIDs[0], (int)returnPIDs[1], (int)returnPIDs[2], (int)returnPIDs[3], (int)returnPIDs[4], (int)returnPIDs[5]);
     gettimeofday(&tim, NULL);
     endTime = tim.tv_sec + (tim.tv_usec / 1000000.0);
-    //printf("Time elapsed: %f\n", endTime - beginTime);
+    printf("Time elapsed: %f\n", endTime - beginTime);
 
-    return solutions;
+    exit(1);
 }

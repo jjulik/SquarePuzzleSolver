@@ -2,8 +2,8 @@
  *                    workerThread
  *                    ------------
  * Author:        Joseph Julik
- * Last Revision: 03-11-2011
- * Version:       0.1
+ * Last Revision: 06-26-2012
+ * Version:       0.2
  * Description:
  *     A child process of squareSolver, used to solve square puzzles
 *****************************************************************************/
@@ -124,38 +124,52 @@ int main(int argc, char *argv[]) {
             printf("Unexpected case in worker thread\n");
             exit(0);
     }
+    int tots = 0;
     while (1) {
         for (i = 0; i < 9; i++) {
             piecesShifted_p[i] = pieces_p[permutationArray[i]];
         }
         if ((permutationArray[2] > threadNo) && (permutationArray[6] > threadNo) && (permutationArray[8] > threadNo)) {
-            for (c[0] = 0; c[0] < 4; c[0]++) { for (c[1] = 0; c[1] < 4; c[1]++) { for (c[2] = 0; c[2] < 4; c[2]++) {
-                if (check(piecesShifted_p[0]->sides[(1+c[0])&3], piecesShifted_p[1]->sides[(3+c[1])&3]) &&
-                    check(piecesShifted_p[1]->sides[(1+c[1])&3], piecesShifted_p[2]->sides[(3+c[2])&3])) {
-                    for (c[3] = 0; c[3] < 4; c[3]++) { for (c[4] = 0; c[4] < 4; c[4]++) { for (c[5] = 0; c[5] < 4; c[5]++) {
-                        if (check(piecesShifted_p[3]->sides[(1+c[3])&3], piecesShifted_p[4]->sides[(3+c[4])&3]) &&
-                            check(piecesShifted_p[4]->sides[(1+c[4])&3], piecesShifted_p[5]->sides[(3+c[5])&3]) &&
-                            check(piecesShifted_p[0]->sides[(2+c[0])&3], piecesShifted_p[3]->sides[c[3]]) &&
-                            check(piecesShifted_p[1]->sides[(2+c[1])&3], piecesShifted_p[4]->sides[c[4]]) &&
-                            check(piecesShifted_p[2]->sides[(2+c[2])&3], piecesShifted_p[5]->sides[c[5]])) {
-                            for (c[6] = 0; c[6] < 4; c[6]++) { for (c[7] = 0; c[7] < 4; c[7]++) { for (c[8] = 0; c[8] < 4; c[8]++) {
-                                if (check(piecesShifted_p[3]->sides[(2+c[3])&3], piecesShifted_p[6]->sides[c[6]]) &&
-                                    check(piecesShifted_p[4]->sides[(2+c[4])&3], piecesShifted_p[7]->sides[c[7]]) &&
-                                    check(piecesShifted_p[5]->sides[(2+c[5])&3], piecesShifted_p[8]->sides[c[8]]) &&
-                                    check(piecesShifted_p[4]->sides[(1+c[4])&3], piecesShifted_p[5]->sides[(3+c[5])&3]) &&
-                                    check(piecesShifted_p[6]->sides[(1+c[6])&3], piecesShifted_p[7]->sides[(3+c[7])&3]) &&
-                                    check(piecesShifted_p[7]->sides[(1+c[7])&3], piecesShifted_p[8]->sides[(3+c[8])&3])) {
-                                    printf("(%d,%d) (%d,%d) (%d,%d)\n(%d,%d) (%d,%d) (%d,%d)\n(%d,%d) (%d,%d) (%d,%d)\n\n", permutationArray[0], c[0], permutationArray[1], c[1], permutationArray[2], c[2], permutationArray[3], c[3], permutationArray[4], c[4], permutationArray[5], c[5], permutationArray[6], c[6], permutationArray[7], c[7], permutationArray[8], c[8]);
-                                }
-                            }}}
-                        }
-                    }}}
-                }
-            }}}
-        }
+            for (c[0] = 0; c[0] < 4; c[0]++) { for (c[1] = 0; c[1] < 4; c[1]++) { 
+            	if (check(piecesShifted_p[0]->sides[(1+c[0])&3], piecesShifted_p[1]->sides[(3+c[1])&3])) {
+            		for (c[2] = 0; c[2] < 4; c[2]++) {
+                		if (check(piecesShifted_p[1]->sides[(1+c[1])&3], piecesShifted_p[2]->sides[(3+c[2])&3])) {
+                    			for (c[3] = 0; c[3] < 4; c[3]++) { 
+                    				if (check(piecesShifted_p[0]->sides[(2+c[0])&3], piecesShifted_p[3]->sides[c[3]])) {
+                    					for (c[4] = 0; c[4] < 4; c[4]++) { 
+                    						 if (check(piecesShifted_p[3]->sides[(1+c[3])&3], piecesShifted_p[4]->sides[(3+c[4])&3]) &&
+                    						 	check(piecesShifted_p[1]->sides[(2+c[1])&3], piecesShifted_p[4]->sides[c[4]])) {
+                    							for (c[5] = 0; c[5] < 4; c[5]++) {
+                        							if (check(piecesShifted_p[4]->sides[(1+c[4])&3], piecesShifted_p[5]->sides[(3+c[5])&3]) &&
+                            								check(piecesShifted_p[2]->sides[(2+c[2])&3], piecesShifted_p[5]->sides[c[5]])) {
+                            								for (c[6] = 0; c[6] < 4; c[6]++) { 
+                            									if (check(piecesShifted_p[3]->sides[(2+c[3])&3], piecesShifted_p[6]->sides[c[6]])) {
+                            										for (c[7] = 0; c[7] < 4; c[7]++) { 
+                            											if (check(piecesShifted_p[4]->sides[(2+c[4])&3], piecesShifted_p[7]->sides[c[7]]) &&
+                            												check(piecesShifted_p[6]->sides[(1+c[6])&3], piecesShifted_p[7]->sides[(3+c[7])&3])) {
+                            												for (c[8] = 0; c[8] < 4; c[8]++) {
+                                												if (check(piecesShifted_p[5]->sides[(2+c[5])&3], piecesShifted_p[8]->sides[c[8]]) &&
+                                    													check(piecesShifted_p[7]->sides[(1+c[7])&3], piecesShifted_p[8]->sides[(3+c[8])&3])) {
+                                                                                        tots++;
+                                    													//printf("(%d,%d) (%d,%d) (%d,%d)\n(%d,%d) (%d,%d) (%d,%d)\n(%d,%d) (%d,%d) (%d,%d)\n\n", permutationArray[0], c[0], permutationArray[1], c[1], permutationArray[2], c[2], permutationArray[3], c[3], permutationArray[4], c[4], permutationArray[5], c[5], permutationArray[6], c[6], permutationArray[7], c[7], permutationArray[8], c[8]);
+                                    												}
+                                    											}
+                                    										}
+                                    									}
+                                    								}
+                                    							}
+                                    						}
+                                    					}
+                                    				}
+                                    			}
+                                    		}
+                                    	}
+                                    }
+                                }}}}}
         if (next(permutationArray, 9, threadNo)) { //next returns 1 if there are no more permutations
             break;
         }
     }
-    return 1;
+    //printf("%d\n", tots);
+    return tots;
 }
