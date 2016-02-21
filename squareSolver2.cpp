@@ -24,7 +24,7 @@ using namespace std;
 class commonThread {
 	public:
 	
-		commonThead() {
+		commonThread() {
 			vop[0].sem_num = 0;
 			vop[0].sem_op = 1;
 			vop[0].sem_flg = 0;
@@ -36,7 +36,7 @@ class commonThread {
 		void initSHM () {
 			shmID = shmget(SHM_KEY, 8, 0666 | IPC_CREAT);
 			shmSem = semget(IPC_PRIVATE, 1, IPC_CREAT | 0666);
-			vOperation(shmSem, 0);
+			//vOperation(shmSem, 0);
 		}
 		
 	private:
@@ -46,8 +46,8 @@ class commonThread {
 		struct sembuf pop[1]; //a P operation
 };
 
-int commonOperations::shmID;
-int commonOperations::shmSem;
+//int commonOperations::shmID;
+//int commonOperations::shmSem;
 
 class masterThread: public commonThread {
 	public:

@@ -1,6 +1,6 @@
 OBJS = squareSolver workerThread
-CC = g++-4.5
-CFLAGS = -g -std=c++0x
+CC = g++
+CFLAGS = -g -std=c++11
 
 all : $(OBJS)
 

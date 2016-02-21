@@ -77,7 +77,7 @@ int main(int argc, char *argv[]) {
     puzzlePiece pieces[9];
     puzzlePiece *pieces_p[9];
     puzzlePiece *piecesShifted_p[9];
-    int permutationArray[9];
+    int *permutationArray = new int[9];
     int fileSize;
     int threadNo = atoi(argv[1]);
     int c[9];
@@ -103,22 +103,70 @@ int main(int argc, char *argv[]) {
     //permutationArray represents the current state of the puzzle
     switch (threadNo) {
         case 0:
-            permutationArray = {0,1,2,3,4,5,6,7,8};
+            permutationArray[0] = 0;
+            permutationArray[1] = 1;
+            permutationArray[2] = 2;
+            permutationArray[3] = 3;
+            permutationArray[4] = 4;
+            permutationArray[5] = 5;
+            permutationArray[6] = 6;
+            permutationArray[7] = 7;
+            permutationArray[8] = 8;
             break;
         case 1:
-            permutationArray = {1,0,2,3,4,5,6,7,8};
+            permutationArray[0] = 1;
+            permutationArray[1] = 0;
+            permutationArray[2] = 2;
+            permutationArray[3] = 3;
+            permutationArray[4] = 4;
+            permutationArray[5] = 5;
+            permutationArray[6] = 6;
+            permutationArray[7] = 7;
+            permutationArray[8] = 8;
             break;
         case 2:
-            permutationArray = {2,0,1,3,4,5,6,7,8};
+            permutationArray[0] = 2;
+            permutationArray[1] = 0;
+            permutationArray[2] = 1;
+            permutationArray[3] = 3;
+            permutationArray[4] = 4;
+            permutationArray[5] = 5;
+            permutationArray[6] = 6;
+            permutationArray[7] = 7;
+            permutationArray[8] = 8;
             break;
         case 3:
-            permutationArray = {3,0,1,2,4,5,6,7,8};
+            permutationArray[0] = 3;
+            permutationArray[1] = 0;
+            permutationArray[2] = 1;
+            permutationArray[3] = 2;
+            permutationArray[4] = 4;
+            permutationArray[5] = 5;
+            permutationArray[6] = 6;
+            permutationArray[7] = 7;
+            permutationArray[8] = 8;
             break;
         case 4:
-            permutationArray = {4,0,1,2,3,5,6,7,8};
+            permutationArray[0] = 4;
+            permutationArray[1] = 0;
+            permutationArray[2] = 1;
+            permutationArray[3] = 2;
+            permutationArray[4] = 3;
+            permutationArray[5] = 5;
+            permutationArray[6] = 6;
+            permutationArray[7] = 7;
+            permutationArray[8] = 8;
             break;
         case 5:
-            permutationArray = {5,0,1,2,3,4,6,7,8};
+            permutationArray[0] = 5;
+            permutationArray[1] = 0;
+            permutationArray[2] = 1;
+            permutationArray[3] = 2;
+            permutationArray[4] = 3;
+            permutationArray[5] = 4;
+            permutationArray[6] = 6;
+            permutationArray[7] = 7;
+            permutationArray[8] = 8;
             break;
         default:
             printf("Unexpected case in worker thread\n");
@@ -151,7 +199,7 @@ int main(int argc, char *argv[]) {
                                 												if (check(piecesShifted_p[5]->sides[(2+c[5])&3], piecesShifted_p[8]->sides[c[8]]) &&
                                     													check(piecesShifted_p[7]->sides[(1+c[7])&3], piecesShifted_p[8]->sides[(3+c[8])&3])) {
                                                                                         tots++;
-                                    													//printf("(%d,%d) (%d,%d) (%d,%d)\n(%d,%d) (%d,%d) (%d,%d)\n(%d,%d) (%d,%d) (%d,%d)\n\n", permutationArray[0], c[0], permutationArray[1], c[1], permutationArray[2], c[2], permutationArray[3], c[3], permutationArray[4], c[4], permutationArray[5], c[5], permutationArray[6], c[6], permutationArray[7], c[7], permutationArray[8], c[8]);
+                                    													printf("(%d,%d) (%d,%d) (%d,%d)\n(%d,%d) (%d,%d) (%d,%d)\n(%d,%d) (%d,%d) (%d,%d)\n\n", permutationArray[0], c[0], permutationArray[1], c[1], permutationArray[2], c[2], permutationArray[3], c[3], permutationArray[4], c[4], permutationArray[5], c[5], permutationArray[6], c[6], permutationArray[7], c[7], permutationArray[8], c[8]);
                                     												}
                                     											}
                                     										}
@@ -170,6 +218,6 @@ int main(int argc, char *argv[]) {
             break;
         }
     }
-    printf("%d\n", tots);
+    //printf("%d\n", tots);
     return 1;
 }
